@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🛠️ Build Firmware",
+      "type": "shell",
+      "command": "idf.py build",
+      "options": {
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
+      },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "⚡ Flash & Monitor",
+      "type": "shell",
+      "command": "idf.py flash monitor",
+      "options": {
+        "shell": {
+          "executable": "/bin/zsh",
+          "args": ["-l", "-c"]
+        }
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

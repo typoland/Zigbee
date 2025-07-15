@@ -1,0 +1,17 @@
+{
+  "idf.espIdfPath": "/Users/lukasz/esp/esp-idf",
+  "idf.pythonBinPath": "/Users/lukasz/.espressif/python_env/idf5.4_py3.13_env/bin/python",
+  "idf.toolsPath": "/Users/lukasz/.espressif",
+  "idf.customExtraPaths": "/opt/homebrew/bin:/Users/lukasz/.swiftly/bin:/Users/lukasz/.cargo/bin",
+  "idf.customSetEnvVars": {
+    "IDF_PATH": "/Users/lukasz/esp/esp-idf"
+  },
+  "terminal.integrated.env.osx": {
+    "IDF_PATH": "/Users/lukasz/esp/esp-idf",
+    "PATH": "/opt/homebrew/bin:/Users/lukasz/.swiftly/bin:/Users/lukasz/.espressif/python_env/idf5.4_py3.13_env/bin:/Users/lukasz/.espressif/tools/cmake/3.24.0/bin:/Users/lukasz/.espressif/tools/ninja/1.10.2/bin:${env:PATH}",
+    "SWIFTFLAGS": "-target riscv32-none-none-eabi -sdk ${workspaceFolder}/sdk"
+  },
+  "C_Cpp.errorSquiggles": "disabled"
+}
+
+ 

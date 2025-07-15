@@ -1,0 +1,6 @@
+/build/
+/CSources/
+/managed_components/
+/.vscode/
+sdkconfig.old
+Zigbee.code-workspace
