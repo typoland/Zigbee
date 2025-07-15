@@ -52,6 +52,7 @@ enum GPIOState: UInt32 {
 func gpio(_ num: Int) -> gpio_num_t {
 	gpio_num_t(Int32(num))
 }
+
 func resetPin(_ pin: Int) {
 	gpio_reset_pin(gpio(pin)) // optional but safe
 }
@@ -94,12 +95,13 @@ enum ESPError: Error {
 
 func runEsp(_ espCommand: ()->esp_err_t) throws (ESPError) {
 	let error = espCommand() 
-	print ("Esp command: \(espErrorName(error))") 
+	//print ("Esp command: \(espErrorName(error))") 
 	if error == ESP_OK {
 		return
 	} 
 	throw ESPError.espCommandFailed(error)
 }
+
 func espErrorName(_ espError: esp_err_t) -> String {
 	if let cStr = esp_err_to_name(espError) {
 		return String(cString: cStr)

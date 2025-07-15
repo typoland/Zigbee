@@ -1,3 +1,8 @@
+var stripeColor = LedStrip.Color.white
+var ledStrip = LedStrip.ESP32H2
+var lightLevel: UInt8 = 0 
+var lightState: Bool = false
+
 @_cdecl("app_main")
 func main() {
 
@@ -12,3 +17,5 @@ func main() {
      print ("🆗 TASK CRATED")
 }
 
+// @_silgen_name("printf")
+// func c_printf(_ format: UnsafePointer<CChar>, _ args: CVarArg...) -> Int32

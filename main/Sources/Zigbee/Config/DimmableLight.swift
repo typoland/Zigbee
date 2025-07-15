@@ -1,6 +1,6 @@
 enum DimmableLight {
     /* Basic manufacturer information */
-    static var manufacturerName: [CChar] = [0x09] + "ESPRESSIV".utf8.map{CChar($0)}
+    static var manufacturerName: [CChar] = [0x07] + "MOMENTARY".utf8.map{CChar($0)}
     static var modelIdentifier: [CChar] = [0x05] + "SWIFT".utf8.map{CChar($0)}
 
     //Because of c macros
@@ -16,7 +16,7 @@ enum DimmableLight {
     static var ESP_ZB_ZCL_COLOR_CONTROL_ENHANCED_COLOR_MODE_DEFAULT_VALUE: UInt8 = 0x01
     static var colorCapabilities: UInt16 = 0x0008
 
-    static var endpoint: UInt8 = 10
+    static var endpointId: UInt8 = 10
     static var primaryChannelMask = ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK
 
 

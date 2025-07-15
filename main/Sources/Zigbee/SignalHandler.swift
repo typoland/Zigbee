@@ -22,7 +22,7 @@ func esp_zb_app_signal_handler(
     let errStatus = signal.esp_err_status
 
     print(
-        "\(#function) 📶 \(appSignalOverview(for: signalTypeRawValue))\nZigbee Signal Type: 0x\(String(signalTypeRawValue, radix: 16)), Status: \(errStatus)"
+        "📶✳️ \(appSignalOverview(for: signalTypeRawValue))\nZigbee Signal Type: 0x\(String(signalTypeRawValue, radix: 16)), Status: \(errStatus) in \(#function) "
     )
 
     do {
@@ -55,14 +55,13 @@ func esp_zb_app_signal_handler(
             }
 
         case ESP_ZB_ZDO_SIGNAL_LEAVE.rawValue:
-
             print("\(#function) 🚪 Left network")
 
         case ESP_ZB_ZDO_SIGNAL_PRODUCTION_CONFIG_READY.rawValue:
             print("\(#function) 🧰 Config ready")
 
         // Add more signal cases as needed
-        default: print("\(#function)❓ Some other signal \(signalTypeRawValue)")
+        default: print("\(#function)❓ Other signal:\n\t\"\(appSignalOverview(for: signalTypeRawValue))\"")
         }
     } catch {
         print(error.description)

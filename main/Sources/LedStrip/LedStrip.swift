@@ -10,7 +10,7 @@
 //===----------------------------------------------------------------------===//
 
 // A simple "overlay" to provide nicer APIs in Swift
-struct LedStrip {
+class LedStrip {
   private let handle: led_strip_handle_t
 
   init(gpioPin: Int, maxLeds: Int) {
@@ -32,6 +32,9 @@ struct LedStrip {
     else { fatalError("cannot configure spi device") }
     self.handle = handle
   }
+  static var ESP32H2: LedStrip {
+    .init(gpioPin: 8, maxLeds: 1)
+  }
 
   struct Color {
     static var white = Color(r: 255, g: 255, b: 255)
@@ -46,11 +49,26 @@ struct LedStrip {
   }
 
   func setPixel(index: Int, color: Color) {
-    led_strip_set_pixel(
-      handle, UInt32(index), UInt32(color.r), UInt32(color.g), UInt32(color.b))
+    do {
+      try runEsp {
+        led_strip_set_pixel(
+          handle, UInt32(index), UInt32(color.r), UInt32(color.g), UInt32(color.b)
+        )
+      }
+    } catch {
+      print("\(#file) SET PIXEL ERROR \"\(error.description)\"")
+    }
+    refresh()
   }
 
-  func refresh() { led_strip_refresh(handle) }
-
-  func clear() { led_strip_clear(handle) }
+  func refresh() {
+    do { try runEsp { led_strip_refresh(handle) } } catch {
+      print("\(#file) REFRESH ERROR \"\(error.description)\"")
+    }
+  }
+  func clear() {
+    do { try runEsp { led_strip_clear(handle) } } catch {
+      print("\(#file) CLEAR ERROR \"\(error.description)\"")
+    }
+  }
 }

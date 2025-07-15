@@ -19,10 +19,10 @@
 #include "driver/gpio.h"
 #include "driver/uart.h"
 
+
 //Zigbee:
 #include "ha/esp_zigbee_ha_standard.h"
 #include "esp_zigbee_core.h"
-#include "extensions/light_driver.h"
 #include "extensions/zcl_utility.h"
 #include "nvs_flash.h"
 //Zigbee lamp

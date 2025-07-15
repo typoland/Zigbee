@@ -10,14 +10,14 @@ func zb_action_handler(
                 .assumingMemoryBound(to: esp_zb_zcl_set_attr_value_message_t.self)
 
         else {
-            print("❌ messge wrong in \(#function)")
+            print("▶️ ❌ Wrong Message in \(#function)")
             return ESP_FAIL
         }
-        print("✅ return attribute handler cluster \(msg.pointee.info.cluster) \(#function)")
+        print("▶️ ➡️ return attribute handler cluster \(msg.pointee.info.cluster) \(#function)")
         return zb_attribute_handler(msg)
 
     default:
-        print("⚠️ Zigbee action callback received: \"\(callback_id.description)\"  \(#function)")
+        print("▶️ ⚠️ Zigbee action callback received: \"\(callback_id.description)\"  \(#function)")
         return ESP_OK
     }
 }
