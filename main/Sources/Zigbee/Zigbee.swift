@@ -1,3 +1,62 @@
+
+
+func addEndpointBasicManufacturerInfo(
+    endpointList: UnsafeMutablePointer<esp_zb_ep_list_t>,
+    endpointId: UInt8,
+    name: String,
+    model: String
+) throws (ESPError)  {
+    var name: [CChar] = [CChar(name.count)] + name.utf8.map{CChar($0)}
+    var model:[CChar] = [CChar(model.count)] + model.utf8.map{CChar($0)}
+    
+    let info: zcl_basic_manufacturer_info_t = name.withUnsafeMutableBufferPointer {
+        namePtr in
+        model.withUnsafeMutableBufferPointer { modelPtr in
+            return zcl_basic_manufacturer_info_t(
+                manufacturer_name: namePtr.baseAddress,
+                model_identifier: modelPtr.baseAddress
+            )
+        }
+    }
+
+    guard let clusterList = esp_zb_ep_list_get_ep(endpointList, endpointId)
+    else { throw .espCommandFailed( ESP_ERR_INVALID_ARG) }
+    
+    guard let basicCluster = esp_zb_cluster_list_get_cluster(
+        clusterList,
+        UInt16(ESP_ZB_ZCL_CLUSTER_ID_BASIC.rawValue),
+        UInt8(ESP_ZB_ZCL_CLUSTER_SERVER_ROLE.rawValue)
+    ) else { throw .espCommandFailed(ESP_ERR_INVALID_ARG) }
+    
+    guard info.manufacturer_name != nil 
+    else { throw .espCommandFailed(ESP_ERR_INVALID_ARG) }  
+    try runEsp {
+        esp_zb_basic_cluster_add_attr(
+            basicCluster,
+           UInt16(ESP_ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID.rawValue), 
+           info.manufacturer_name)
+
+    }
+
+    guard info.model_identifier != nil 
+    else { throw .espCommandFailed(ESP_ERR_INVALID_ARG) }
+
+    try runEsp {
+        esp_zb_basic_cluster_add_attr(
+            basicCluster,
+           UInt16(ESP_ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID.rawValue), 
+           info.model_identifier)
+
+    }
+
+     esp_zb_device_register(endpointList)
+    esp_zb_core_action_handler_register(zb_action_handler)
+    esp_zb_set_primary_network_channel_set(DimmableLight.primaryChannelMask)
+
+
+    
+}
+
 extension esp_zb_core_action_callback_id_t {
     var description: String {
         switch self {

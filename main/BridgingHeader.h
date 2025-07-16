@@ -27,5 +27,6 @@
 #include "nvs_flash.h"
 //Zigbee lamp
 #include "zcl/esp_zigbee_zcl_core.h"
+#include "zcl/esp_zigbee_zcl_common.h"
 
 

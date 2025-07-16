@@ -10,24 +10,16 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
 
     /* -------------------- Light Config --------------------- */
     var lightConfig: esp_zb_color_dimmable_light_cfg_t = DimmableLight.config
-    let ledStripEndPoint = esp_zb_color_dimmable_light_ep_create(
+    guard let ledStripEndPoint: UnsafeMutablePointer<esp_zb_ep_list_t> = esp_zb_color_dimmable_light_ep_create(
         DimmableLight.endpointId,
         &lightConfig)
+    else {return}
      
     //print("💡 DIMMABLE LIGHT ENDPOINT DONE \(#function)")
 
-    var name = DimmableLight.manufacturerName
-    var model = DimmableLight.modelIdentifier
+ 
+    var info = DimmableLight.info
 
-    var info = name.withUnsafeMutableBufferPointer {
-        namePtr in
-        model.withUnsafeMutableBufferPointer { modelPtr in
-            return zcl_basic_manufacturer_info_t(
-                manufacturer_name: namePtr.baseAddress,
-                model_identifier: modelPtr.baseAddress
-            )
-        }
-    }
     esp_zcl_utility_add_ep_basic_manufacturer_info(
         ledStripEndPoint, 
         DimmableLight.endpointId, 
