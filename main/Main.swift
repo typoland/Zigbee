@@ -1,8 +1,12 @@
 var stripeColor = LedStrip.Color.white
 var ledStrip = LedStrip.ESP32H2
-var analogInput = try! ADC.OneShot(channel:.channel0, unit: .unit1)
 var lightLevel: UInt8 = 0 
 var lightState: Bool = false
+
+let adcUnit = ADC.OneShot.Unit(.unit1)
+var analogInput = try! ADC.OneShot(unit: adcUnit, channel: .channel0)
+var pontentiometerInput = try! ADC.OneShot(unit: adcUnit, channel: .channel1)
+
 
 @_cdecl("app_main")
 func main() {

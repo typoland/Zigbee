@@ -88,7 +88,11 @@ enum ADC {
 
             }
         }
+    }
 
-    
-} ;
+    enum CalibrationMode {
+        case none
+        case curve
+        case line
+    }
 }

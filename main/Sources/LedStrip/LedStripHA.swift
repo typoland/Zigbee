@@ -15,6 +15,11 @@ extension LedStrip {
         setPixel(index: 0, color: stripeColor.level(lightLevel))
         
         if let volt = try? analogInput.read() {
+            print("TEMP Reading: \((Float(volt)/1000).string(3))V")
+        } else {
+            print ("TEMP Ureadable")
+        }
+        if let volt = try? pontentiometerInput.read() {
             print("VOLT Reading: \((Float(volt)/1000).string(3))V")
         } else {
             print ("VOLT Ureadable")
