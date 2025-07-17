@@ -13,6 +13,8 @@ extension LedStrip {
         stripeColor = Color(x: colorX, y: 1, z: colorZ)
 
         setPixel(index: 0, color: stripeColor.level(lightLevel))
+        
+        try? analogInput.read()
     }
 
     func setColor(hue: UInt8, saturation: UInt8) {

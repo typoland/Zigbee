@@ -9,15 +9,12 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
     //print("🛜 NETWORK DONE \(#function)")
 
     /* -------------------- Light Config --------------------- */
-    var lightConfig: esp_zb_color_dimmable_light_cfg_t = DimmableLight.config
+    var lightConfig = DimmableLight.config
     guard let ledStripEndPoint: UnsafeMutablePointer<esp_zb_ep_list_t> = esp_zb_color_dimmable_light_ep_create(
         DimmableLight.endpointId,
         &lightConfig)
     else {return}
-     
-    //print("💡 DIMMABLE LIGHT ENDPOINT DONE \(#function)")
 
- 
     var info = DimmableLight.info
 
     esp_zcl_utility_add_ep_basic_manufacturer_info(
@@ -26,6 +23,9 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
         &info)
 
     esp_zb_device_register(ledStripEndPoint)
+    //print("💡 DIMMABLE LIGHT ENDPOINT DONE \(#function)")
+
+
     esp_zb_core_action_handler_register(zb_action_handler)
     esp_zb_set_primary_network_channel_set(DimmableLight.primaryChannelMask)
 

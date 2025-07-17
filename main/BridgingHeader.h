@@ -28,5 +28,12 @@
 //Zigbee lamp
 #include "zcl/esp_zigbee_zcl_core.h"
 #include "zcl/esp_zigbee_zcl_common.h"
+//ADC
+#include "esp_adc/adc_oneshot.h"
+#include "esp_adc/adc_cali.h"
+#include "esp_adc/adc_cali_scheme.h"
+
+
+
 
 

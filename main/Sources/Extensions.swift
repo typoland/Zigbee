@@ -49,6 +49,43 @@ enum GPIOState: UInt32 {
 	}
 }
 
+enum ADCAttenuation:UInt32 { // parameter. Different parameters determine the range of the ADC.
+   case  dB_0   = 0  ///<No input attenuation, ADC can measure up to approx.
+   case  dB_2_5 = 1  ///<The input voltage of ADC will be attenuated extending the range of measurement by about 2.5 dB
+   case  dB_6   = 2  ///<The input voltage of ADC will be attenuated extending the range of measurement by about 6 dB
+   case dB_12  = 3  ///<The input voltage of ADC will be attenuated extending the range of measurement by about 12 dB
+   var esp:adc_atten_t {
+	adc_atten_t(self.rawValue)
+   }
+} 
+
+enum ADCBitwidth:UInt32 {
+    case `default` = 0 ///< Default ADC output bits, max supported width will be selected
+    case bitwidth_9  = 9      ///< ADC output width is 9Bit
+    case bitwidth_10 = 10     ///< ADC output width is 10Bit
+    case bitwidth_11 = 11     ///< ADC output width is 11Bit
+    case bitwidth_12 = 12     ///< ADC output width is 12Bit
+    case bitwidth_13 = 13     ///< ADC output width is 13Bit
+	var esp: adc_bitwidth_t {
+		adc_bitwidth_t(rawValue: self.rawValue)
+	}
+} 
+
+enum ADC_ULPMode: UInt32 {
+// *
+// * This decides the controller that controls ADC when in low power mode.
+// * Set `ADC_ULP_MODE_DISABLE` for normal mode.
+    case disable = 0 ///< ADC ULP mode is disabled
+    case fsm     = 1 ///< ADC is controlled by ULP FSM
+    case riscv   = 2 ///< ADC is controlled by ULP RISCV
+#if SOC_LP_ADC_SUPPORTED
+    case lp_core = 3 ///< ADC is controlled by LP Core
+#endif // SOC_LP_ADC_SUPPORTED
+	var esp: adc_ulp_mode_t {
+		adc_ulp_mode_t(rawValue: self.rawValue)
+	}
+} 
+
 func gpio(_ num: Int) -> gpio_num_t {
 	gpio_num_t(Int32(num))
 }

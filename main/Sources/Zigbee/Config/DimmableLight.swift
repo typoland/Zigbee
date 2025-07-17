@@ -15,19 +15,6 @@ struct DimmableLight {
         }
     }
 
-    //Because of c macros
-    static var ESP_ZB_ZCL_ON_OFF_ON_OFF_DEFAULT_VALUE: Bool = false
-    static var ESP_ZB_ZCL_ON_OFF_GLOBAL_SCENE_CONTROL_DEFAULT_VALUE: Bool = true
-    static var ESP_ZB_ZCL_ON_OFF_ON_TIME_DEFAULT_VALUE: UInt16 = 0x00A0 //was 0x0000
-    static var ESP_ZB_ZCL_ON_OFF_OFF_WAIT_TIME_DEFAULT_VALUE: UInt16 = 0x0000
-    static var ESP_ZB_ZCL_LEVEL_CONTROL_CURRENT_LEVEL_DEFAULT_VALUE: UInt8 = 0x10 //was FF
-    static var ESP_ZB_ZCL_COLOR_CONTROL_CURRENT_X_DEF_VALUE: UInt16 = 0x216b // 0x616b
-    static var ESP_ZB_ZCL_COLOR_CONTROL_CURRENT_Y_DEF_VALUE: UInt16 = 0x907d // 0x616b
-    static var ESP_ZB_ZCL_COLOR_CONTROL_COLOR_MODE_DEFAULT_VALUE: UInt8 = 0x01
-    static var ESP_ZB_ZCL_COLOR_CONTROL_OPTIONS_DEFAULT_VALUE: UInt8 = 0x00
-    static var ESP_ZB_ZCL_COLOR_CONTROL_ENHANCED_COLOR_MODE_DEFAULT_VALUE: UInt8 = 0x01
-    static var colorCapabilities: UInt16 = 0x0008
-
     static var endpointId: UInt8 = 10
     static var primaryChannelMask = ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK
 
@@ -74,8 +61,7 @@ struct DimmableLight {
         scenes: cluster.scenes,
         onOff: cluster.onOff,
         level: cluster.level,
-        color: cluster.color)
-       
+        color: cluster.color)  
 }
 
 
