@@ -1,6 +1,6 @@
 var stripeColor = LedStrip.Color.white
 var ledStrip = LedStrip.ESP32H2
-var analogInput = try! OneShotADC()
+var analogInput = try! ADC.OneShot(channel:.channel0, unit: .unit1)
 var lightLevel: UInt8 = 0 
 var lightState: Bool = false
 

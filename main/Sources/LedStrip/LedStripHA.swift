@@ -14,7 +14,11 @@ extension LedStrip {
 
         setPixel(index: 0, color: stripeColor.level(lightLevel))
         
-        try? analogInput.read()
+        if let volt = try? analogInput.read() {
+            print("VOLT Reading: \((Float(volt)/1000).string(3))V")
+        } else {
+            print ("VOLT Ureadable")
+        }
     }
 
     func setColor(hue: UInt8, saturation: UInt8) {
