@@ -1,22 +1,14 @@
-public enum ZCLScenes:UInt8 {
+extension ZCLCluster.Scenes  {
     // MARK: - Attribute IDs
 
-    
-    case sceneCount         = 0x0000  // Number of scenes currently in the device's scene table
-    case currentScene       = 0x0001  // Scene ID of the scene last invoked
-    case currentGroup       = 0x0002  // Group ID of the scene last invoked
-    case sceneValid         = 0x0003  // Whether state matches currentScene + currentGroup
-    case nameSupport        = 0x0004  // MSB indicates if scene names are supported
-    case lastConfiguredBy   = 0x0005  // IEEE address of last device that configured the scene table
- 
-
-    // MARK: - Default Values
-
-    public static let sceneCountDefault: UInt8        = 0   // Default scene count
-    public static let currentSceneDefault: UInt8      = 0   // Default current scene ID
-    public static let currentGroupDefault: UInt16     = 0   // Default current group ID
-    public static let sceneValidDefault: UInt8        = 0   // Default scene valid flag
-    public static let nameSupportDefault: UInt8       = 0   // Default name support
+    enum Attributes :UInt8 {
+        case sceneCount         = 0x0000  // Number of scenes currently in the device's scene table
+        case currentScene       = 0x0001  // Scene ID of the scene last invoked
+        case currentGroup       = 0x0002  // Group ID of the scene last invoked
+        case sceneValid         = 0x0003  // Whether state matches currentScene + currentGroup
+        case nameSupport        = 0x0004  // MSB indicates if scene names are supported
+        case lastConfiguredBy   = 0x0005  // IEEE address of last device that configured the scene table
+    }
 
     // MARK: - Command Identifiers
 
@@ -47,3 +39,22 @@ public enum ZCLScenes:UInt8 {
         case copySceneResponse            = 0x42  // Response to Copy Scene
     }
 }
+
+extension ZCLCluster.Scenes {
+    enum Default {
+        static var config = ScenesClusterConfig (
+                scenesCount:    sceneCount,
+                currentSceneID: currentScene, //UInt8(ESP_ZB_ZCL_SCENES_CURRENT_SCENE_DEFAULT_VALUE),
+                currentGroup:   currentGroup,
+                sceneValid:     sceneCount != 0,
+                nameSupportID:  nameSupport)
+// MARK: - Default Values
+
+    public static let sceneCount: UInt8        = 0   // Default scene count
+    public static let currentScene: UInt8      = 0   // Default current scene ID
+    public static let currentGroup: UInt16     = 0   // Default current group ID
+    public static let sceneValid: UInt8        = 0   // Default scene valid flag
+    public static let nameSupport: UInt8       = 0   // Default name support
+    }
+}
+

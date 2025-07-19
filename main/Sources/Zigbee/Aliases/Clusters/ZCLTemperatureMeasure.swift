@@ -1,10 +1,10 @@
-public struct ZCLTemperatureMeasurement {
-    public enum Attribute: UInt16 {
+public enum ZCLTemperatureMeasurement:UInt16 {
+   
         case measuredValue     = 0x0000  // MeasuredValue
         case minMeasuredValue  = 0x0001  // MinMeasuredValue
         case maxMeasuredValue  = 0x0002  // MaxMeasuredValue
         case tolerance         = 0x0003  // Tolerance
-    }
+    
 
     public enum Default {
         public static let measuredValue: Int16 = .invalid

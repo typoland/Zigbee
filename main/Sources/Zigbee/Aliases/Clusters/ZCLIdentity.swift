@@ -1,12 +1,8 @@
-public struct ZCLIdentify {
+extension ZCLCluster.Identify {
     // MARK: - Attribute IDs
-
-    public static let identifyTime: UInt16 = 0x0000  // Identify time attribute
-    
-
-    // MARK: - Default Values
-
-    public static let identifyTimeDefaultValue: UInt16 = 0x0000  // Default value for Identify attribute
+    public enum Attribute: UInt16 {
+        case  identifyTime = 0x0000  // Identify time attribute
+    }
 
     // MARK: - Command Identifiers
 
@@ -31,5 +27,16 @@ public struct ZCLIdentify {
         case channelChange  = 0x0B  // Orange for 8s or brightness swing
         case finishEffect   = 0xFE  // Finish current effect sequence before ending
         case stop           = 0xFF  // Stop the effect immediately
+    }
+}
+
+extension ZCLCluster.Identify {
+    enum Default {
+        static var config = IdentifyClusterConfig (
+                identifyTime: identifyTime)
+    // MARK: - Default Values
+
+    public static let identifyTime: UInt16 = 0x0000  // Default value for Identify attribute
+
     }
 }

@@ -51,8 +51,8 @@ extension LedStrip {
         lightLevel = level
         setPixel(index: 0, color: stripeColor.level(level))
     }
-
 }
+
 extension LedStrip.Color {
     init(x: Float, y: Float, z: Float) {
         let fr =  3.240479 * x - 1.537150 * y - 0.498535 * z

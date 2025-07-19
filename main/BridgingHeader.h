@@ -32,7 +32,9 @@
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
-
+//Thermometer
+#include "zcl/esp_zigbee_zcl_temperature_meas.h"
+#include "zcl/esp_zigbee_zcl_analog_input.h"
 
 
 

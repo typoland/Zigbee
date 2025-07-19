@@ -1,5 +1,5 @@
-public enum ZCLBasic {
-    public enum BasicAttribute: UInt16 {
+extension ZCLCluster.Basic {
+    public enum Attribute: UInt16 {
         case zclVersion                  = 0x0000  // ZCL version attribute
         case applicationVersion          = 0x0001  // Application version attribute
         case stackVersion                = 0x0002  // Stack version attribute
@@ -36,28 +36,35 @@ public enum ZCLBasic {
         return 0x80 + power.rawValue  // (1 << 7) + power
     }
 
-    public static let zclVersion: UInt8 = 0x08                      // Default ZCL version
-    public static let applicationVersion: UInt8 = 0x00              // Default application version
-    public static let stackVersion: UInt8 = 0x00                    // Default stack version
-    public static let hardwareVersion: UInt8 = 0x00                 // Default hardware version
 
-    public static let manufacturerName: [UInt8] = []                // Default: empty string
-    public static let modelIdentifier: [UInt8] = []                 // Default: empty string
-    public static let dateCode: [UInt8] = []                        // Default: empty string
-    public static let powerSource: PowerSource = .unknown                     // Default power source
-    public static let genericDeviceClass: UInt8 = 0xFF              // Default generic device class
-    public static let genericDeviceType: UInt8 = 0xFF               // Default generic device type
-    public static let productCode: [UInt8] = []                     // Default product code
-    public static let productURL: [UInt8] = []                      // Default product URL
-    public static let manufacturerVersionDetails: [UInt8] = []     // Default version details
-    public static let serialNumber: [UInt8] = []                    // Default serial number
-    public static let productLabel: [UInt8] = []                    // Default product label
-    public static let locationDescription: [UInt8] = []            // Default location description
-    public static let physicalEnvironment: UInt8 = 0x00            // Default physical environment
-    public static let deviceEnabled: Bool = true                   // Default device enabled
-    public static let alarmMask: UInt8 = 0x00                      // Default alarm mask
-    public static let disableLocalConfig: UInt8 = 0x00             // Default disable local config
+    public enum Default {
+        static var config =  BasicClusterConfig(
+                        zclVersion:  zclVersion,
+                        powerSource: .unknown)
+                
+        public static func secondaryPowerSource(_ power: ZCLCluster.Basic.PowerSource) -> UInt8 {
+            return 0x80 + power.rawValue  // (1 << 7) + power
+        }
+        public static let zclVersion: UInt8 = 0x08                      // Default ZCL version
+        public static let applicationVersion: UInt8 = 0x00              // Default application version
+        public static let stackVersion: UInt8 = 0x00                    // Default stack version
+        public static let hardwareVersion: UInt8 = 0x00                 // Default hardware version
 
-    /// Default SW build ID in Pascal-style string (length + 16 bytes)
-    public static let softwareBuildID: [UInt8] = Array(repeating: 0, count: 17)
+        public static let manufacturerName: [UInt8] = []                // Default: empty string
+        public static let modelIdentifier: [UInt8] = []                 // Default: empty string
+        public static let dateCode: [UInt8] = []                        // Default: empty string
+        public static let powerSource: ZCLCluster.Basic.PowerSource = .unknown                     // Default power source
+        public static let genericDeviceClass: UInt8 = 0xFF              // Default generic device class
+        public static let genericDeviceType: UInt8 = 0xFF               // Default generic device type
+        public static let productCode: [UInt8] = []                     // Default product code
+        public static let productURL: [UInt8] = []                      // Default product URL
+        public static let manufacturerVersionDetails: [UInt8] = []     // Default version details
+        public static let serialNumber: [UInt8] = []                    // Default serial number
+        public static let productLabel: [UInt8] = []                    // Default product label
+        public static let locationDescription: [UInt8] = []            // Default location description
+        public static let physicalEnvironment: UInt8 = 0x00            // Default physical environment
+        public static let deviceEnabled: Bool = true                   // Default device enabled
+        public static let alarmMask: UInt8 = 0x00                      // Default alarm mask
+        public static let disableLocalConfig: UInt8 = 0x00             // Default disable local config
+    }
 }

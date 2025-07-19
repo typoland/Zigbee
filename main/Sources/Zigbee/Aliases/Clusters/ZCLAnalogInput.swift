@@ -1,33 +1,19 @@
-// translation of 
-// managed_components/espressif__esp-zigbee-lib/include/zcl/esp_zigbee_zcl_analog_input.h
-// with help of ChatGPT
-public enum ZCLAnalogInput: UInt16 {
+extension ZCLCluster.AnalogInput {
+
     // MARK: - Attribute IDs
-
-    
-    case description        = 0x001C  // Description
-    case maxPresentValue    = 0x0041  // MaxPresentValue
-    case minPresentValue    = 0x0045  // MinPresentValue
-    case outOfService       = 0x0051  // OutOfService
-    case presentValue       = 0x0055  // PresentValue
-    case reliability        = 0x0067  // Reliability
-    case resolution         = 0x006A  // Resolution
-    case statusFlags        = 0x006F  // StatusFlags
-    case engineeringUnits   = 0x0075  // EngineeringUnits
-    case applicationType    = 0x0100  // ApplicationType
+    enum Attributes: UInt16 {
+        case description        = 0x001C  // Description
+        case maxPresentValue    = 0x0041  // MaxPresentValue
+        case minPresentValue    = 0x0045  // MinPresentValue
+        case outOfService       = 0x0051  // OutOfService
+        case presentValue       = 0x0055  // PresentValue
+        case reliability        = 0x0067  // Reliability
+        case resolution         = 0x006A  // Resolution
+        case statusFlags        = 0x006F  // StatusFlags
+        case engineeringUnits   = 0x0075  // EngineeringUnits
+        case applicationType    = 0x0100  // ApplicationType
+    }
   
-
-    // MARK: - Default Values
-
-    public static let descriptionDefault: [UInt8] = []           // Empty string
-    public static let outOfServiceDefault: Bool = false          // Not out of service
-    public static let reliabilityDefault: UInt8 = 0x00           // No fault
-    public static let statusFlagsDefault: StatusFlags = []       // All bits cleared
-
-    public static let statusFlagsMin: UInt8 = 0x00
-    public static let statusFlagsMax: UInt8 = 0x0F
-
-    public static let reportableAttributeCount = 2
 
     // MARK: - Status Flags (Bitfield)
 
@@ -102,8 +88,22 @@ public enum ZCLAnalogInput: UInt16 {
     public static let appTypeHumidityOther = appType(.humidity, 0xFFFF)
     public static let appTypePressureOther = appType(.pressure, 0xFFFF)
 }
+extension ZCLCluster.AnalogInput {
+    enum Default {
+         // MARK: - Default Values
 
-extension ZCLAnalogInput {
+        public static let description: [UInt8] = []           // Empty string
+        public static let outOfService: Bool = false          // Not out of service
+        public static let reliability: UInt8 = 0x00           // No fault
+        public static let statusFlags: StatusFlags = []       // All bits cleared
+
+        public static let statusFlagsMin: UInt8 = 0x00
+        public static let statusFlagsMax: UInt8 = 0x0F
+
+        public static let reportableAttributeCount = 2
+    }
+}
+extension ZCLCluster.AnalogInput {
     public enum TemperatureApplication: UInt16 {
         case twoPipeEntering                         = 0x0000
         case twoPipeLeaving                          = 0x0001
