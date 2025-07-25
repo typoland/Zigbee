@@ -1,4 +1,4 @@
-extension ZCLCluster.Identify {
+struct IdentifyCluster {
     // MARK: - Attribute IDs
     public enum Attribute: UInt16 {
         case  identifyTime = 0x0000  // Identify time attribute
@@ -30,7 +30,8 @@ extension ZCLCluster.Identify {
     }
 }
 
-extension ZCLCluster.Identify {
+extension IdentifyCluster {
+    static var config = Default.config
     enum Default {
         static var config = IdentifyClusterConfig (
                 identifyTime: identifyTime)
@@ -38,5 +39,13 @@ extension ZCLCluster.Identify {
 
     public static let identifyTime: UInt16 = 0x0000  // Default value for Identify attribute
 
+    }
+}
+
+typealias IdentifyClusterConfig = esp_zb_identify_cluster_cfg_t
+extension IdentifyClusterConfig {
+    /*!<  The remaining length of the time that identify itself */
+    init(identifyTime: UInt16) {
+        self = .init(identify_time: identifyTime)
     }
 }

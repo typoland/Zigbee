@@ -1,4 +1,4 @@
-extension ZCLCluster.ColorControl { 
+struct ColorControlCluster { 
     // MARK: - Attribute IDs
 
     enum Attribute : UInt16 {
@@ -86,7 +86,10 @@ extension ZCLCluster.ColorControl {
 
 }
 
-extension ZCLCluster.ColorControl {
+extension ColorControlCluster {
+
+    static var config = Default.config
+    
     enum Default {
         static var config = ColorControlClusterConfig (
                 currentX: currentX, 
@@ -115,5 +118,26 @@ extension ZCLCluster.ColorControl {
     public static let colorCapabilities: UInt16             = 0x0000
     public static let colorTempPhysicalMinMireds: UInt16    = 0x0000
     public static let colorTempPhysicalMaxMireds: UInt16    = 0xFEFF
+    }
+}
+
+typealias ColorControlClusterConfig = esp_zb_color_cluster_cfg_t
+extension ColorControlClusterConfig {
+    init(
+        currentX: UInt16,
+        currentY: UInt16,
+        colorMode: UInt8,
+        options: UInt8,
+        enhancedColorMode: UInt8,
+        colorCapabilities: [ColorControlCluster.ColorCapability]
+    ) {
+        self = .init(
+            current_x: currentX,
+            current_y: currentY,
+            color_mode: colorMode,
+            options: options,
+            enhanced_color_mode: enhancedColorMode,
+            color_capabilities: 1<<3 //ZCLCluster.ColorControl.ColorCapability.value(colorCapabilities)
+        )
     }
 }

@@ -9,10 +9,25 @@ func start_top_level_commissioning_cb_u8(_ value: UInt8) {
     try? startTopLevelComissioningCB(mask: mode)
 }
 
+func defferedDriverInit() throws (ESPError) {
+    //var isInited = false
+    var sensorCofig: temperature_sensor_config_t = SensorConfig.init(range: -10...80)
+    //if !isInited {
+
+        try runEsp{
+            temp_sensor_driver_init( &sensorCofig ,1 , esp_app_temp_sensor_handler)
+        }
+        //} catch { print("❌ Failed to initialize temperature sensor \(error.description)")}
+        //MISSING BUTTON HANDLER?
+    //    isInited = true
+}
+
 @_cdecl("esp_zb_app_signal_handler")
 func esp_zb_app_signal_handler(
     _ signalPointer: UnsafeMutablePointer<esp_zb_app_signal_t>?
 ) {
+    print ("🔧 SIGNAL HANDLER")
+    
     guard let signal: esp_zb_app_signal_t = signalPointer?.pointee else {
         print("❌ Null signal_struct")
         return
@@ -20,12 +35,13 @@ func esp_zb_app_signal_handler(
     // Reinterpret the p_app_signal pointer as esp_zb_app_signal_type_t*
     let signalTypeRawValue = signal.p_app_signal?.pointee ?? 0
     let errStatus = signal.esp_err_status
+    //CHECK
 
     print(
         "📶✳️ \(appSignalOverview(for: signalTypeRawValue))\nZigbee Signal Type: 0x\(String(signalTypeRawValue, radix: 16)), Status: \(errStatus) in \(#function) "
     )
 
-    do {
+    do  {
         switch signalTypeRawValue {
         case ESP_ZB_ZDO_SIGNAL_SKIP_STARTUP.rawValue:
             print("\(#function) 🔁 Skip startup")
@@ -36,7 +52,9 @@ func esp_zb_app_signal_handler(
 
             if errStatus == ESP_OK {
                 print("\(#function) 🔁 Device reboot, first start")
+                //try defferedDriverInit() 
                 try startTopLevelComissioningCB(mask: ESP_ZB_BDB_MODE_NETWORK_STEERING)
+                print ("Device in\(esp_zb_bdb_is_factory_new() ? "" : " non") factorry reset mode")
             }
         case ESP_ZB_BDB_SIGNAL_STEERING.rawValue:
             if errStatus == ESP_OK {
@@ -64,6 +82,6 @@ func esp_zb_app_signal_handler(
         default: print("\(#function)❓ Other signal:\n\t\"\(appSignalOverview(for: signalTypeRawValue))\"")
         }
     } catch {
-        print(error.description)
+       fatalError("NOTHING WORKS HERE")
     }
 }

@@ -1,4 +1,4 @@
-extension ZCLCluster.Level  {
+struct LevelCluster  {
     // MARK: - Attribute IDs
 
     enum Attributes:UInt16 {
@@ -36,7 +36,8 @@ extension ZCLCluster.Level  {
     }
 }
 
-extension ZCLCluster.Level {
+extension LevelCluster {
+    static var config = Default.config
     enum Default {
         static var config = LevelClusterConfig (
                 currentLevel: currentLevel)
@@ -56,5 +57,12 @@ extension ZCLCluster.Level {
         public static let defaultMoveRate: UInt8         = 0xFF
         public static let options: UInt8                 = 0x00
         public static let startUpCurrentLevel: UInt8     = 0xFF  // Use previous level
+    }
+}
+
+typealias LevelClusterConfig = esp_zb_level_cluster_cfg_t
+extension LevelClusterConfig {
+    init(currentLevel: UInt8) {
+        self = .init(current_level: currentLevel)
     }
 }

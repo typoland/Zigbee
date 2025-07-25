@@ -1,4 +1,4 @@
-extension ZCLCluster.OnOff {
+struct OnOffCluster {
 
 public enum ZCLOnOff {
     // MARK: - Attribute IDs
@@ -26,7 +26,8 @@ public enum ZCLOnOff {
 }
 }
 
-extension ZCLCluster.OnOff {
+extension OnOffCluster {
+    static var config = Default.config
     enum Default {
         // MARK: - Default Values
         static var config = OnOffClusterConfig (
@@ -37,5 +38,11 @@ extension ZCLCluster.OnOff {
         public static let onTime: UInt16            = 0x0000 // Default On Time
         public static let offWaitTime: UInt16       = 0x0000 // Default Off Wait Time
         public static let startUpOnOff: UInt8 = 0xFF  // Default startup behavior (restore previous state)
+    }
+}
+typealias OnOffClusterConfig = esp_zb_on_off_cluster_cfg_t
+extension OnOffClusterConfig {
+    init(onOff: Bool) {
+        self = .init(on_off: onOff)
     }
 }

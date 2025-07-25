@@ -1,4 +1,4 @@
-extension ZCLCluster.Scenes  {
+struct ScenesCluster  {
     // MARK: - Attribute IDs
 
     enum Attributes :UInt8 {
@@ -12,7 +12,7 @@ extension ZCLCluster.Scenes  {
 
     // MARK: - Command Identifiers
 
-    public enum Command: UInt8 {
+    enum Command: UInt8 {
         case addScene             = 0x00  // Add scene command
         case viewScene            = 0x01  // View scene command
         case removeScene          = 0x02  // Remove scene command
@@ -27,7 +27,7 @@ extension ZCLCluster.Scenes  {
 
     // MARK: - Response Command Identifiers
 
-    public enum ResponseCommand: UInt8 {
+    enum ResponseCommand: UInt8 {
         case addSceneResponse             = 0x00  // Response to Add Scene
         case viewSceneResponse            = 0x01  // Response to View Scene
         case removeSceneResponse          = 0x02  // Response to Remove Scene
@@ -40,9 +40,12 @@ extension ZCLCluster.Scenes  {
     }
 }
 
-extension ZCLCluster.Scenes {
+extension ScenesCluster {
+
+    static var config = Default.config
+
     enum Default {
-        static var config = ScenesClusterConfig (
+        static let config = ScenesClusterConfig (
                 scenesCount:    sceneCount,
                 currentSceneID: currentScene, //UInt8(ESP_ZB_ZCL_SCENES_CURRENT_SCENE_DEFAULT_VALUE),
                 currentGroup:   currentGroup,
@@ -50,11 +53,30 @@ extension ZCLCluster.Scenes {
                 nameSupportID:  nameSupport)
 // MARK: - Default Values
 
-    public static let sceneCount: UInt8        = 0   // Default scene count
-    public static let currentScene: UInt8      = 0   // Default current scene ID
-    public static let currentGroup: UInt16     = 0   // Default current group ID
-    public static let sceneValid: UInt8        = 0   // Default scene valid flag
-    public static let nameSupport: UInt8       = 0   // Default name support
+    static let sceneCount: UInt8        = 0   // Default scene count
+    static let currentScene: UInt8      = 0   // Default current scene ID
+    static let currentGroup: UInt16     = 0   // Default current group ID
+    static let sceneValid: UInt8        = 0   // Default scene valid flag
+    static let nameSupport: UInt8       = 0   // Default name support
+    }
+}
+
+public typealias ScenesClusterConfig = esp_zb_scenes_cluster_cfg_t
+public extension ScenesClusterConfig {
+    init(
+        scenesCount: UInt8,
+        currentSceneID: UInt8,
+        currentGroup: UInt16,
+        sceneValid: Bool,
+        nameSupportID: UInt8
+    ) {
+        self = .init(
+            scenes_count: scenesCount,
+            current_scene: currentSceneID,
+            current_group: currentGroup,
+            scene_valid: sceneValid,
+            name_support: nameSupportID
+        )
     }
 }
 

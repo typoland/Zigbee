@@ -1,4 +1,4 @@
-extension ZCLCluster.Groups {
+struct GroupsCluster {
 
      enum Attributes {
     // MARK: - Attribute IDs
@@ -20,14 +20,22 @@ extension ZCLCluster.Groups {
    
 }
 
-extension ZCLCluster.Groups {
+extension GroupsCluster {
+
+    static var config = Default.config
     enum Default {
          // MARK: - Default Values
-            static var config =  GroupsClusterConfig (
+            static let config =  GroupsClusterConfig (
             groupsNameSupportID: nameSupport)
 
     public static let nameSupport: UInt8 = 0x00  // Default value for NameSupport attribute
 
+    }
+}
 
+public typealias GroupsClusterConfig = esp_zb_groups_cluster_cfg_t
+public extension GroupsClusterConfig {
+    init(groupsNameSupportID: UInt8) {
+        self = .init(groups_name_support_id: groupsNameSupportID)
     }
 }

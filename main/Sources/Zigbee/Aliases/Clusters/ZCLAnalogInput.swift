@@ -1,4 +1,4 @@
-extension ZCLCluster.AnalogInput {
+struct AnalogInputCluster {
 
     // MARK: - Attribute IDs
     enum Attributes: UInt16 {
@@ -88,7 +88,8 @@ extension ZCLCluster.AnalogInput {
     public static let appTypeHumidityOther = appType(.humidity, 0xFFFF)
     public static let appTypePressureOther = appType(.pressure, 0xFFFF)
 }
-extension ZCLCluster.AnalogInput {
+
+extension AnalogInputCluster {
     enum Default {
          // MARK: - Default Values
 
@@ -103,7 +104,7 @@ extension ZCLCluster.AnalogInput {
         public static let reportableAttributeCount = 2
     }
 }
-extension ZCLCluster.AnalogInput {
+extension AnalogInputCluster {
     public enum TemperatureApplication: UInt16 {
         case twoPipeEntering                         = 0x0000
         case twoPipeLeaving                          = 0x0001

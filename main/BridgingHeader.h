@@ -35,6 +35,8 @@
 //Thermometer
 #include "zcl/esp_zigbee_zcl_temperature_meas.h"
 #include "zcl/esp_zigbee_zcl_analog_input.h"
+#include "driver/temperature_sensor.h"
+#include "CSources/temp_sensor_driver.h"
 
 
 

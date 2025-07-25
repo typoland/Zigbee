@@ -1,4 +1,4 @@
-extension ZCLCluster.Basic {
+struct BasicCluster {
     public enum Attribute: UInt16 {
         case zclVersion                  = 0x0000  // ZCL version attribute
         case applicationVersion          = 0x0001  // Application version attribute
@@ -36,13 +36,13 @@ extension ZCLCluster.Basic {
         return 0x80 + power.rawValue  // (1 << 7) + power
     }
 
-
+    static var config = Default.config
     public enum Default {
         static var config =  BasicClusterConfig(
                         zclVersion:  zclVersion,
                         powerSource: .unknown)
                 
-        public static func secondaryPowerSource(_ power: ZCLCluster.Basic.PowerSource) -> UInt8 {
+        public static func secondaryPowerSource(_ power: BasicCluster.PowerSource) -> UInt8 {
             return 0x80 + power.rawValue  // (1 << 7) + power
         }
         public static let zclVersion: UInt8 = 0x08                      // Default ZCL version
@@ -53,7 +53,7 @@ extension ZCLCluster.Basic {
         public static let manufacturerName: [UInt8] = []                // Default: empty string
         public static let modelIdentifier: [UInt8] = []                 // Default: empty string
         public static let dateCode: [UInt8] = []                        // Default: empty string
-        public static let powerSource: ZCLCluster.Basic.PowerSource = .unknown                     // Default power source
+        public static let powerSource: BasicCluster.PowerSource = .unknown                     // Default power source
         public static let genericDeviceClass: UInt8 = 0xFF              // Default generic device class
         public static let genericDeviceType: UInt8 = 0xFF               // Default generic device type
         public static let productCode: [UInt8] = []                     // Default product code
@@ -66,5 +66,15 @@ extension ZCLCluster.Basic {
         public static let deviceEnabled: Bool = true                   // Default device enabled
         public static let alarmMask: UInt8 = 0x00                      // Default alarm mask
         public static let disableLocalConfig: UInt8 = 0x00             // Default disable local config
+    }
+}
+
+
+typealias BasicClusterConfig = esp_zb_basic_cluster_cfg_t
+extension BasicClusterConfig {
+    init(zclVersion: UInt8, powerSource: BasicCluster.PowerSource) {
+        self = .init(
+            zcl_version: zclVersion,
+            power_source: powerSource.rawValue)
     }
 }
