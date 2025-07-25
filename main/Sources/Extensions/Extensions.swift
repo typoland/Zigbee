@@ -87,10 +87,13 @@ func delayMicroseconds(_ us: Int) {
 
 enum ESPError: Error {
 	case espCommandFailed(esp_err_t)
+	case failure(String) 
 	var description: String {
 		switch self {
 			case .espCommandFailed(let espError):
 				espErrorName(espError)
+			case .failure( let string):
+				string
 		}
 	}
 }

@@ -9,17 +9,18 @@ func start_top_level_commissioning_cb_u8(_ value: UInt8) {
     try? startTopLevelComissioningCB(mask: mode)
 }
 
-func defferedDriverInit() throws (ESPError) {
-    //var isInited = false
-    var sensorCofig: temperature_sensor_config_t = SensorConfig.init(range: -10...80)
-    //if !isInited {
-
-        try runEsp{
-            temp_sensor_driver_init( &sensorCofig ,1 , esp_app_temp_sensor_handler)
-        }
-        //} catch { print("❌ Failed to initialize temperature sensor \(error.description)")}
-        //MISSING BUTTON HANDLER?
-    //    isInited = true
+func defferedDriverInit()  throws (ESPError) {
+    print ("🟣 Deffered Driver Init", terminator:"")
+    var sensorConfig: temperature_sensor_config_t = SensorConfig.init(range: -10...80)
+    print ("💜 sensor config done")
+    thermometer = try TemperatureSensorDriver(
+        config: &sensorConfig,
+        updateInterval: 1000) 
+    {   tepmerature in 
+        print("This is CALLBACK! \(tepmerature.string(3))")
+    } 
+        
+    print ("💙 thermometer Exist here")
 }
 
 @_cdecl("esp_zb_app_signal_handler")
@@ -52,7 +53,7 @@ func esp_zb_app_signal_handler(
 
             if errStatus == ESP_OK {
                 print("\(#function) 🔁 Device reboot, first start")
-                //try defferedDriverInit() 
+                try defferedDriverInit() 
                 try startTopLevelComissioningCB(mask: ESP_ZB_BDB_MODE_NETWORK_STEERING)
                 print ("Device in\(esp_zb_bdb_is_factory_new() ? "" : " non") factorry reset mode")
             }

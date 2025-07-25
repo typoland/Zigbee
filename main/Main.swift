@@ -7,6 +7,9 @@ let adcUnit = ADC.OneShot.Unit(.unit1)
 var analogInput = try! ADC.OneShot(unit: adcUnit, channel: .channel0)
 var pontentiometerInput = try! ADC.OneShot(unit: adcUnit, channel: .channel1)
 
+//var sensorConfig: SensorConfig = SensorConfig(range: -20...80)
+
+var thermometer: TemperatureSensorDriver? = nil 
 
 @_cdecl("app_main")
 func main() {
