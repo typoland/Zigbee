@@ -76,18 +76,22 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
         thermometerClusterList, 
         thermometerEndPointConfig)
 
-    // var reportingInfo = Thermometer.reportingInfo
-    // print ("✔️  Reporting info defined")
-    // esp_zb_zcl_update_reporting_info(&reportingInfo)
-    // print ("✔️  Reporting info updated")
-    /*------------------------END--------------------*/
-  
+
     do {try runEsp{ esp_zb_device_register(endpointList) }
     } catch {print ("❌ Could not register endpoint List: n\(error.description)")}
 
     print ("✅ Endpoints list OK")
 
     /*=================Endpoints done================*/
+
+    var reportingInfo = Thermometer.reportingInfo
+    print ("✔️  Reporting info defined")
+    esp_zb_zcl_update_reporting_info(&reportingInfo)
+    print ("✔️  Reporting info updated")
+    /*------------------------END--------------------*/
+  
+    
+
     
     
      do { 
