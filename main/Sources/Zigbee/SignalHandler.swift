@@ -16,8 +16,19 @@ func defferedDriverInit()  throws (ESPError) {
     thermometer = try TemperatureSensorDriver(
         config: &sensorConfig,
         updateInterval: 1000) 
-    {   tepmerature in 
-        print("This is CALLBACK! \(tepmerature.string(3))")
+    {   temperature in 
+        print("This is CALLBACK! \(temperature.string(3))")
+        var measuredValue = UInt16(temperature*100)
+        /* Update temperature sensor measured value */
+        esp_zb_lock_acquire(portMAX_DELAY);
+        esp_zb_zcl_set_attribute_val(
+            Thermometer.endpointId,
+            ZCLClusterID.temperatureMeasurement.rawValue, // ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT, 
+            ZCLClusterRole.server.rawValue, // ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
+            TemperatureMeasurmentsCluster.Attributes.measuredValue.rawValue, // ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, 
+            &measuredValue, 
+            false);
+        esp_zb_lock_release()
     } 
         
     print ("💙 thermometer Exist here")

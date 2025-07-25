@@ -48,12 +48,8 @@ class TemperatureSensorDriver {
         print ("🔹 sensor enabled")
 
         //try runEsp { 
-            xTaskCreate(temp_sensor_driver_value_update, 
-                                "sensor_update", 
-                                2048,
-                                nil,
-                                10, 
-                                nil)//}
+        xTaskCreate(temp_sensor_driver_value_update, "sensor_update",2048,nil,10,nil)
+            //}
 
         print ("🔹 xTask created")
 
@@ -72,36 +68,16 @@ func assign_temp_value(_ parameter: UnsafeMutableRawPointer?) -> Void {
 func swift_temp_callback(_ temperature: Float) {
     print("🟡 Swift callback: temperature = \(temperature)")
 }
-/*
-@_cdecl("esp_app_temp_sensor_handler")
-func esp_app_temp_sensor_handler(_ temperature: Float)
-{
-    print("🟠 esp_app_temp_sensor_handler")
-    var measuredValue: Int16 = tempTos16(temperature);
-    /* Update temperature sensor measured value */
-    esp_zb_lock_acquire(portMAX_DELAY);
-    esp_zb_zcl_set_attribute_val(
-        Thermometer.endpointId,
-        ZCLClusterID.temperatureMeasurement.rawValue,// ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT, 
-        ZCLClusterRole.server.rawValue,// ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
-        TemperatureMeasurmentsCluster.Attributes.measuredValue.rawValue,// ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, 
-        &measuredValue, 
-        false);
-    esp_zb_lock_release();
-}
-*/
-func tempTos16(_ temp: Float)->Int16 {
-    Int16(temp*100)
-}
+
 
 @_cdecl("temp_sensor_driver_value_update")
 func temp_sensor_driver_value_update(_ param: UnsafeMutableRawPointer?) {
     while true {
-        print("🟢 esp_app_temp_sensor_handler")
+        print("⚠️ esp_app_temp_sensor_handler: ", terminator: "")
         var tSensValue: Float = 0;
         if let thermometer {
             temperature_sensor_get_celsius( thermometer.handle, &tSensValue);
-            print ("Its gOOOOOI ng somewhere")
+            print ("🟢 Its gOOOOOI ng somewhere")
             thermometer.callback(tSensValue);
        
         delayMiliseconds(Int(thermometer.interval))//(pdMS_TO_TICKS(interval * 1000));
