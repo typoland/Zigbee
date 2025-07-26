@@ -98,7 +98,7 @@ enum ESPError: Error {
 	}
 }
 
-func runEsp(_ espCommand: ()->esp_err_t) throws (ESPError) {
+func runEsp(_ espCommand: () -> esp_err_t) throws (ESPError) {
 	let error = espCommand() 
 	//print ("Esp command: \(espErrorName(error))") 
 	if error == ESP_OK {

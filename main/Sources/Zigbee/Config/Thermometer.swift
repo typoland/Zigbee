@@ -91,4 +91,6 @@ struct Thermometer {
             destination: .init(
                 profileID: ZigbeeProfileID.homeAutomation.rawValue),// UInt16(ESP_ZB_AF_HA_PROFILE_ID.rawValue)),//.init()),
             manufacturerCode: UInt16(ESP_ZB_ZCL_ATTR_NON_MANUFACTURER_SPECIFIC)) // esp_zb_zcl_reporting_info_s.__Unnamed_struct_dst, manuf_code: UInt16)
+
+            
 }

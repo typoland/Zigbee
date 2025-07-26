@@ -34,40 +34,26 @@ class TemperatureSensorDriver {
         self.interval = updateInterval
         
         //Sensor Driver Init
-        print ("🔷 Init TemperatureSensorDriver")
+        //print ("🔷 Init TemperatureSensorDriver")
         var handle = temperature_sensor_handle_t(bitPattern: 0)
         // tempSensorDriverSensorInit
-        print ("🔹 HANDLE: \(handle == nil ? "nil" : "defined")")
         try runEsp { temperature_sensor_install(config,  &handle) }
-        print ("🔹 sensor installed")
         guard let handle = handle
         else {throw .failure("no handle in \(#function)")}
-        print ("🔹 HANDLE: \(handle == nil ? "nil" : "defined")")
         self.handle = handle
         try runEsp { temperature_sensor_enable(handle)}
-        print ("🔹 sensor enabled")
 
         //try runEsp { 
-        xTaskCreate(temp_sensor_driver_value_update, "sensor_update",2048,nil,10,nil)
+        guard xTaskCreate(temp_sensor_driver_value_update, "sensor_update",2048,nil,10,nil)==pdTRUE
+        else {throw .failure("xTask cannot by fires in \(#function)")}
             //}
 
-        print ("🔹 xTask created")
+        //print ("🔹 xTask created")
 
         print ("🔹 DONE ✔️ ")
     
     }
 } 
-
-
-@_cdecl("assign_temp_value")
-func assign_temp_value(_ parameter: UnsafeMutableRawPointer?) -> Void {
-  print ("🔵 assign temp value")
-}    
-
-@_cdecl("swift_temp_callback")
-func swift_temp_callback(_ temperature: Float) {
-    print("🟡 Swift callback: temperature = \(temperature)")
-}
 
 
 @_cdecl("temp_sensor_driver_value_update")
