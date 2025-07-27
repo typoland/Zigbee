@@ -1,10 +1,24 @@
-struct GroupsCluster {
+struct GroupsCluster: Cluster {
+    typealias Config = esp_zb_groups_cluster_cfg_t
+    var attributeList: UnsafeMutablePointer<esp_zb_attribute_list_t>
+    static let addAttribute     = esp_zb_groups_cluster_add_attr
+    static let addToClusterList = esp_zb_cluster_list_add_groups_cluster
+    
+    init(config: inout Config) {
+        self.attributeList = esp_zb_groups_cluster_create(&config)
+    }
 
-     enum Attributes {
-    // MARK: - Attribute IDs
-
-    public static let nameSupport = 0x0000  // NameSupport attribute
+    enum Attribute {
+        // MARK: - Attribute IDs
+        public static let nameSupport = 0x0000  // NameSupport attribute
      }
+}
+
+extension GroupsCluster.Config: ClusterConfig {
+    init(groupsNameSupportID: UInt8) {
+        self = .init(groups_name_support_id: groupsNameSupportID)
+    }
+     
  
    
     // MARK: - Command Identifiers
@@ -18,24 +32,10 @@ struct GroupsCluster {
         case addGroupIfIdentifying   = 0x05  // Add group if identifying command
     }
    
-}
-
-extension GroupsCluster {
-
-    static var config = Default.config
+    static let `default` =  Self(
+            groupsNameSupportID: Default.nameSupport)
     enum Default {
          // MARK: - Default Values
-            static let config =  GroupsClusterConfig (
-            groupsNameSupportID: nameSupport)
-
-    public static let nameSupport: UInt8 = 0x00  // Default value for NameSupport attribute
-
-    }
-}
-
-public typealias GroupsClusterConfig = esp_zb_groups_cluster_cfg_t
-public extension GroupsClusterConfig {
-    init(groupsNameSupportID: UInt8) {
-        self = .init(groups_name_support_id: groupsNameSupportID)
+        public static let nameSupport: UInt8 = 0x00  // Default value for NameSupport attribute
     }
 }

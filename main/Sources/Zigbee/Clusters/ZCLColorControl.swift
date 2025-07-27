@@ -1,6 +1,13 @@
-struct ColorControlCluster  { 
-    // MARK: - Attribute IDs
-
+struct ColorControlCluster: Cluster {
+    typealias Config =  esp_zb_color_cluster_cfg_t
+    var attributeList: UnsafeMutablePointer<esp_zb_attribute_list_t>
+    static let addAttribute     = esp_zb_color_control_cluster_add_attr
+    static let addToClusterList = esp_zb_cluster_list_add_color_control_cluster
+    
+    init(config: inout Config) {
+        self.attributeList = esp_zb_color_control_cluster_create(&config)
+    }
+    
     enum Attribute : UInt16 {
         case currentHue                        = 0x0000  // Current Hue
         case currentSaturation                 = 0x0001  // Current Saturation
@@ -25,6 +32,28 @@ struct ColorControlCluster  {
         case coupleColorTempToLevelMinMireds   = 0x400D  // Minimum temp linked to level
         case startUpColorTemperatureMireds     = 0x4010  // Startup color temp
     }
+}
+extension ColorControlCluster.Config: ClusterConfig  { 
+    init(
+        currentX: UInt16,
+        currentY: UInt16,
+        colorMode: UInt8,
+        options: UInt8,
+        enhancedColorMode: UInt8,
+        colorCapabilities: [Self.ColorCapability]
+    ) {
+        self = .init(
+            current_x: currentX,
+            current_y: currentY,
+            color_mode: colorMode,
+            options: options,
+            enhanced_color_mode: enhancedColorMode,
+            color_capabilities: 1<<3 //ZCLCluster.ColorControl.ColorCapability.value(colorCapabilities)
+        )
+    }
+    // MARK: - Attribute IDs
+
+    
     // MARK: - Command Identifiers
     public enum Command: UInt8 {
         case moveToHue                     = 0x00  // Move To Hue
@@ -84,20 +113,16 @@ struct ColorControlCluster  {
 }
     }
 
-}
-
-extension ColorControlCluster {
-
-    static var config = Default.config
+    static var `default` = Self (
+                currentX: Default.currentX, 
+                currentY: Default.currentY, 
+                colorMode: Default.colorMode, 
+                options: Default.options, 
+                enhancedColorMode: Default.enhancedColorMode, 
+                colorCapabilities: [.xy]) 
     
     enum Default {
-        static var config = ColorControlClusterConfig (
-                currentX: currentX, 
-                currentY:currentY, 
-                colorMode: colorMode, 
-                options: options, 
-                enhancedColorMode: enhancedColorMode, 
-                colorCapabilities: [.xy]) 
+        
     // MARK: - Default Values
 
     public static let currentHue: UInt8                      = 0x00
@@ -121,23 +146,3 @@ extension ColorControlCluster {
     }
 }
 
-typealias ColorControlClusterConfig = esp_zb_color_cluster_cfg_t
-extension ColorControlClusterConfig {
-    init(
-        currentX: UInt16,
-        currentY: UInt16,
-        colorMode: UInt8,
-        options: UInt8,
-        enhancedColorMode: UInt8,
-        colorCapabilities: [ColorControlCluster.ColorCapability]
-    ) {
-        self = .init(
-            current_x: currentX,
-            current_y: currentY,
-            color_mode: colorMode,
-            options: options,
-            enhanced_color_mode: enhancedColorMode,
-            color_capabilities: 1<<3 //ZCLCluster.ColorControl.ColorCapability.value(colorCapabilities)
-        )
-    }
-}

@@ -1,5 +1,5 @@
 
-struct ThermometerConfig {
+/*struct ThermometerConfig {
     static var manufacturerName = [CChar(0x09)] + "Balangano".utf8.map{CChar($0)}
     static var modelIdentifier = [CChar(0x0C)] + "Play with me".utf8.map{CChar($0)}
 
@@ -16,11 +16,11 @@ struct ThermometerConfig {
     static var endpointId: UInt8 = 11
 
     enum cluster {
-        static var basic = BasicCluster.config
-        static var identify = IdentifyCluster.config
-        static var tempMeasure = TemperatureMeasurmentsCluster.config
+        static var basic = BasicCluster.Config.default
+        static var identify = IdentifyCluster.Config.default
+        static var tempMeasure = TemperatureMeasurmentsCluster.Config.default
     }
-
+    /*
     static var clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? {
         let clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? = esp_zb_zcl_cluster_list_create()
         
@@ -72,10 +72,12 @@ struct ThermometerConfig {
         }
         return clusterList
     }
+    */
+    static func reportingInfo(endpointId: UInt8) -> ReportingInfo {
 
-    static var reportingInfo = ReportingInfo (
+     ReportingInfo (
             direction: .toClient, 
-            endpointID: Thermometer.Config.endpointId, 
+            endpointID: endpointId, 
             clusterID: .temperatureMeasurement, 
             clusterRole: .server, 
             attributesID: .measuredValue, 
@@ -91,6 +93,8 @@ struct ThermometerConfig {
             destination: .init(
                 profileID: ZigbeeProfileID.homeAutomation.rawValue),// UInt16(ESP_ZB_AF_HA_PROFILE_ID.rawValue)),//.init()),
             manufacturerCode: UInt16(ESP_ZB_ZCL_ATTR_NON_MANUFACTURER_SPECIFIC)) // esp_zb_zcl_reporting_info_s.__Unnamed_struct_dst, manuf_code: UInt16)
+    }
 
             
 }
+*/

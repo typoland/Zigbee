@@ -15,7 +15,7 @@ extension ReportingInfo {
         endpointID: UInt8,
         clusterID: ZCLClusterID,
         clusterRole: ZCLClusterRole,
-        attributesID: TemperatureMeasurmentsCluster.Attributes, // TemperatureMeasurement,
+        attributesID: TemperatureMeasurmentsCluster.Attribute, // TemperatureMeasurement,
         flags: UInt8,
         runtime: UInt64,
         intervals: Intervals,
@@ -46,9 +46,9 @@ extension ReportingInfo {
 }
 typealias TemperatureSensorConfig = esp_zb_temperature_sensor_cfg_t
 extension TemperatureSensorConfig {
-    init(basic: BasicClusterConfig,
-        identify: IdentifyClusterConfig,
-        tempMeasure: TemperatureMeasureConfig) {
+    init(basic: BasicCluster.Config,
+        identify: IdentifyCluster.Config,
+        tempMeasure: TemperatureMeasurmentsCluster.Config) {
         self = .init(
             basic_cfg: basic, 
             identify_cfg: identify, 

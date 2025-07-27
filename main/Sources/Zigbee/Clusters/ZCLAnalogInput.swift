@@ -1,7 +1,13 @@
-struct AnalogInputCluster {
-
+struct AnalogInputCluster: Cluster {
+    typealias Config = esp_zb_analog_input_cluster_cfg_s
+    var attributeList: UnsafeMutablePointer<esp_zb_attribute_list_t>
+    static let addAttribute     = esp_zb_analog_input_cluster_add_attr
+    static let addToClusterList = esp_zb_cluster_list_add_analog_input_cluster
+    init(config: inout Config) {
+        self.attributeList = esp_zb_analog_input_cluster_create(&config)
+    }
     // MARK: - Attribute IDs
-    enum Attributes: UInt16 {
+    enum Attribute: UInt16 {
         case description        = 0x001C  // Description
         case maxPresentValue    = 0x0041  // MaxPresentValue
         case minPresentValue    = 0x0045  // MinPresentValue
@@ -13,6 +19,11 @@ struct AnalogInputCluster {
         case engineeringUnits   = 0x0075  // EngineeringUnits
         case applicationType    = 0x0100  // ApplicationType
     }
+}
+
+extension  AnalogInputCluster.Config : ClusterConfig {
+
+    
   
 
     // MARK: - Status Flags (Bitfield)
@@ -89,7 +100,7 @@ struct AnalogInputCluster {
     public static let appTypePressureOther = appType(.pressure, 0xFFFF)
 }
 
-extension AnalogInputCluster {
+extension AnalogInputCluster.Config {
     enum Default {
          // MARK: - Default Values
 
@@ -104,7 +115,7 @@ extension AnalogInputCluster {
         public static let reportableAttributeCount = 2
     }
 }
-extension AnalogInputCluster {
+extension AnalogInputCluster.Config {
     public enum TemperatureApplication: UInt16 {
         case twoPipeEntering                         = 0x0000
         case twoPipeLeaving                          = 0x0001

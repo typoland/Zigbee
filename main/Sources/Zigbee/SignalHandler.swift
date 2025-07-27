@@ -8,7 +8,7 @@ func start_top_level_commissioning_cb_u8(_ value: UInt8) {
         rawValue: UInt32(value))
     try? startTopLevelComissioningCB(mask: mode)
 }
-
+/*
 func defferedDriverInit()  throws (ESPError) {
     print ("🟣 Deffered Driver Init", terminator:"")
     var sensorConfig: temperature_sensor_config_t = SensorConfig.init(range: -10...80)
@@ -25,7 +25,7 @@ func defferedDriverInit()  throws (ESPError) {
             ThermometerConfig.endpointId,
             ZCLClusterID.temperatureMeasurement.rawValue, // ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT, 
             ZCLClusterRole.server.rawValue, // ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
-            TemperatureMeasurmentsCluster.Attributes.measuredValue.rawValue, // ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, 
+            TemperatureMeasurmentsCluster.Attribute.measuredValue.rawValue, // ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, 
             &measuredValue, 
             false);
         esp_zb_lock_release()
@@ -33,7 +33,7 @@ func defferedDriverInit()  throws (ESPError) {
         
     print ("💙 thermometer Exist here")
 }
-
+*/
 @_cdecl("esp_zb_app_signal_handler")
 func esp_zb_app_signal_handler(
     _ signalPointer: UnsafeMutablePointer<esp_zb_app_signal_t>?
@@ -64,7 +64,7 @@ func esp_zb_app_signal_handler(
 
             if errStatus == ESP_OK {
                 print("\(#function) 🔁 Device reboot, first start")
-                try defferedDriverInit() 
+                //try defferedDriverInit() 
                 try startTopLevelComissioningCB(mask: ESP_ZB_BDB_MODE_NETWORK_STEERING)
                 print ("Device in\(esp_zb_bdb_is_factory_new() ? "" : " non") factorry reset mode")
             }

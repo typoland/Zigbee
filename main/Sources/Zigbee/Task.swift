@@ -1,3 +1,8 @@
+
+func makeCChar(from string: String) -> [CChar] {
+    [CChar(string.count)] + string.utf8.map { CChar($0)}
+}
+
 @_cdecl("esp_zb_task")
 func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
 
@@ -16,7 +21,7 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
 
 
     /*-----------------LedStrip------------------------*/
-    
+    /*
     let ledStripEndPointConfig = EndpointConfig(
         id: 10, //ColorLedStip.endpointId, 
         profileID: .homeAutomation, 
@@ -28,7 +33,61 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
         ColorLedStripConfig.clusterList, 
         ledStripEndPointConfig)
 
+*/  
+    //Basic
+    var ledBasicClusterConfig = BasicCluster.Config()
+    
+    var manufacturerName: [CChar] = [0x05] + "ABCDE".utf8.map {CChar($0)}// makeCChar(from: "Ojej")
+    var model = [0x07] + "ABCDEFG".utf8.map {CChar($0)}//makeCChar(from: "Nowosc na rynku")
+    
+    var ledBasicCluster = BasicCluster(config: &ledBasicClusterConfig)
+    try! ledBasicCluster.addAttribute(.manufacturerName, &manufacturerName)
+    try! ledBasicCluster.addAttribute(.modelIdentifier, &model)
+    //Identify
+    var ledIdentifyClusterConfig = IdentifyCluster.Config()
+    var ledIdentifyCluster = IdentifyCluster(config: &ledIdentifyClusterConfig)
+    //OnOff
+    var ledOnOffClusterConfig = OnOffCluster.Config()
+    var ledOnOffCluster = OnOffCluster(config: &ledOnOffClusterConfig)
+    //Level
+    var ledLevelClusterConfig = LevelCluster.Config()
+    var ledLevelCluster = LevelCluster(config: &ledLevelClusterConfig)
+    //ColorControl
+    var ledColorControlClusterConfig = ColorControlCluster.Config()
+    var ledColorControlCluster = ColorControlCluster(config: &ledColorControlClusterConfig)
+    //Groups
+    var ledGroupsClusterConfig = GroupsCluster.Config()
+    var ledGroupsCluster = GroupsCluster(config: &ledGroupsClusterConfig)
+    
+    let ledClusterList = ClusterList.new()
+    do {
+        try ledBasicCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledIdentifyCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledOnOffCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledLevelCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledColorControlCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledGroupsCluster.addTo(clusterlist: ledClusterList,  role: .server)
+    // )
+    } catch {
+        print ("Error: \(error.description)")
+        fatalError(error.description)
+    }
+    let ledStripEndPointConfig = EndpointConfig(
+        id: 10, //ColorLedStip.endpointId, 
+        profileID: .homeAutomation, 
+        deviceID: .colorDimmableLight, 
+        appVersion: 0)
+
+    esp_zb_ep_list_add_ep(
+        endpointList, 
+        ledClusterList, 
+        ledStripEndPointConfig)
+
+
+    
+
      print ("✔️  LedStrip Endpoint done")
+    /*
     /*-----------------Thermometer --------------------*/
 
     /* Create customized temperature sensor endpoint */
@@ -49,6 +108,7 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
         thermometerEndPointConfig)
 
      print ("✔️  Therometer Endpoint done")
+    */
 
     do {try runEsp{ esp_zb_device_register(endpointList) }
     } catch {print ("❌ Could not register endpoint List: n\(error.description)")}
@@ -58,8 +118,8 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
     /*=================Endpoints done================*/
 
     //print ("✔️  Reporting info defined")
-    esp_zb_zcl_update_reporting_info(&ThermometerConfig.reportingInfo)
-    print ("✔️  Reporting info updated")
+    //esp_zb_zcl_update_reporting_info(&ThermometerConfig.reportingInfo)
+    //print ("✔️  Reporting info updated")
     /*------------------------END--------------------*/
   
     

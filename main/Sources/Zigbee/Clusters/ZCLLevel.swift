@@ -1,7 +1,16 @@
-struct LevelCluster {
+struct LevelCluster: Cluster {
+    typealias Config = esp_zb_level_cluster_cfg_t
+    var attributeList: UnsafeMutablePointer<esp_zb_attribute_list_t>
+    static let addAttribute     = esp_zb_level_cluster_add_attr
+    static let addToClusterList = esp_zb_cluster_list_add_level_cluster
+    
+    init(config: inout Config) {
+        self.attributeList = esp_zb_level_cluster_create(&config)
+    }
+    
     // MARK: - Attribute IDs
 
-    enum Attributes:UInt16 {
+    enum Attribute: UInt16 {
         case currentLevel             = 0x0000  // Current Level
         case remainingTime            = 0x0001  // Remaining Time
         case minLevel                 = 0x0002  // Minimum allowed level
@@ -19,6 +28,14 @@ struct LevelCluster {
         case moveStatusInternal       = 0xEFFF  // Internal move status
     }
    
+}
+
+extension LevelCluster.Config: ClusterConfig {
+    init(currentLevel: UInt8) {
+        self = .init(current_level: currentLevel)
+    }
+
+    
 
     
     // MARK: - Command Identifiers
@@ -34,13 +51,10 @@ struct LevelCluster {
         case stopWithOnOff             = 0x07  // Stop with On/Off
         case moveToClosestFrequency    = 0x08  // Move to Closest Frequency
     }
-}
-
-extension LevelCluster {
-    static var config = Default.config
+    static var `default` = Self (
+                currentLevel: Default.currentLevel)
     enum Default {
-        static var config = LevelClusterConfig (
-                currentLevel: currentLevel)
+        
         // MARK: - Default Values
 
         public static let currentLevel: UInt8            = 0xFF  // Undefined level
@@ -60,9 +74,4 @@ extension LevelCluster {
     }
 }
 
-typealias LevelClusterConfig = esp_zb_level_cluster_cfg_t
-extension LevelClusterConfig {
-    init(currentLevel: UInt8) {
-        self = .init(current_level: currentLevel)
-    }
-}
+

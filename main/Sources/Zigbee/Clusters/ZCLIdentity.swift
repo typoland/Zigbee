@@ -1,8 +1,24 @@
-struct IdentifyCluster {
+struct IdentifyCluster: Cluster {
+    typealias Config = esp_zb_identify_cluster_cfg_t
+    var attributeList: UnsafeMutablePointer<esp_zb_attribute_list_t>
+    static let addAttribute     = esp_zb_identify_cluster_add_attr
+    static let addToClusterList = esp_zb_cluster_list_add_identify_cluster
+    init(config: inout Config) {
+        self.attributeList = esp_zb_identify_cluster_create(&config)
+    }
     // MARK: - Attribute IDs
     public enum Attribute: UInt16 {
         case  identifyTime = 0x0000  // Identify time attribute
     }
+}
+
+
+extension IdentifyCluster.Config: ClusterConfig {
+    /*!<  The remaining length of the time that identify itself */
+    init(identifyTime: UInt16) {
+        self = .init(identify_time: identifyTime)
+    }
+    
 
     // MARK: - Command Identifiers
 
@@ -28,24 +44,11 @@ struct IdentifyCluster {
         case finishEffect   = 0xFE  // Finish current effect sequence before ending
         case stop           = 0xFF  // Stop the effect immediately
     }
-}
 
-extension IdentifyCluster {
-    static var config = Default.config
+    static var `default` = Self (
+                identifyTime: Default.identifyTime)
     enum Default {
-        static var config = IdentifyClusterConfig (
-                identifyTime: identifyTime)
-    // MARK: - Default Values
-
-    public static let identifyTime: UInt16 = 0x0000  // Default value for Identify attribute
-
-    }
-}
-
-typealias IdentifyClusterConfig = esp_zb_identify_cluster_cfg_t
-extension IdentifyClusterConfig {
-    /*!<  The remaining length of the time that identify itself */
-    init(identifyTime: UInt16) {
-        self = .init(identify_time: identifyTime)
+        // MARK: - Default Values
+        public static let identifyTime: UInt16 = 0x0000  // Default value for Identify attribute
     }
 }

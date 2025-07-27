@@ -15,15 +15,16 @@ struct ColorLedStripConfig {
     static var endpointId: UInt8 = 10
 
     enum cluster {
-        static var basic = BasicCluster.config
-        static var identify = IdentifyCluster.config
-        static var onoff = OnOffCluster.config
-        static var level = LevelCluster.config
-        static var colorControl = ColorControlCluster.config
-        static var groups = GroupsCluster.config
-        static var scenes = ScenesCluster.config
+        static var basic = BasicCluster.Config.default
+        static var identify = IdentifyCluster.Config.default
+        static var onoff = OnOffCluster.Config.default
+        static var level = LevelCluster.Config.default
+        static var colorControl = ColorControlCluster.Config.default
+        static var groups = GroupsCluster.Config.default
+        static var scenes = ScenesCluster.Config.default
     }
 
+    /*
     static var clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? {
         
         let clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? = esp_zb_zcl_cluster_list_create()
@@ -104,4 +105,5 @@ struct ColorLedStripConfig {
 
         return clusterList
     }
+    */
 }
