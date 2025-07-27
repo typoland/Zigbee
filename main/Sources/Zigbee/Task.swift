@@ -1,10 +1,13 @@
 
-func makeCChar(from string: String) -> [CChar] {
-    [CChar(string.count)] + string.utf8.map { CChar($0)}
-}
+
+//@_cdecl("make_CChar")
+
 
 @_cdecl("esp_zb_task")
 func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
+
+
+
 
     /* initialize Zigbee stack */
     let endpointList = esp_zb_ep_list_create()
@@ -34,39 +37,45 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
         ledStripEndPointConfig)
 
 */  
+    
     //Basic
     var ledBasicClusterConfig = BasicCluster.Config()
-    
-    var manufacturerName: [CChar] = [0x05] + "ABCDE".utf8.map {CChar($0)}// makeCChar(from: "Ojej")
-    var model = [0x07] + "ABCDEFG".utf8.map {CChar($0)}//makeCChar(from: "Nowosc na rynku")
-    
+    var manufacturerName =  [0x0D] + "Zofia z Lomzy".utf8.map {CChar($0)}// */ BasicCluster.makeCChar("Ojej")
+    var model = [0x0F] + "Nowosc na rynku".utf8.map {CChar($0)}
     var ledBasicCluster = BasicCluster(config: &ledBasicClusterConfig)
     try! ledBasicCluster.addAttribute(.manufacturerName, &manufacturerName)
     try! ledBasicCluster.addAttribute(.modelIdentifier, &model)
+
     //Identify
     var ledIdentifyClusterConfig = IdentifyCluster.Config()
     var ledIdentifyCluster = IdentifyCluster(config: &ledIdentifyClusterConfig)
+
     //OnOff
     var ledOnOffClusterConfig = OnOffCluster.Config()
     var ledOnOffCluster = OnOffCluster(config: &ledOnOffClusterConfig)
+
     //Level
     var ledLevelClusterConfig = LevelCluster.Config()
     var ledLevelCluster = LevelCluster(config: &ledLevelClusterConfig)
+
     //ColorControl
     var ledColorControlClusterConfig = ColorControlCluster.Config()
     var ledColorControlCluster = ColorControlCluster(config: &ledColorControlClusterConfig)
+    
+    // var cap = [ColorControlCluster.Config.ColorCapability.xy]
+    // try! ledColorControlCluster.addAttribute(.colorCapabilities, &cap )
     //Groups
     var ledGroupsClusterConfig = GroupsCluster.Config()
     var ledGroupsCluster = GroupsCluster(config: &ledGroupsClusterConfig)
     
-    let ledClusterList = ClusterList.new()
+    let ledClustersList = ClusterList.new()
     do {
-        try ledBasicCluster.addTo(clusterlist: ledClusterList,  role: .server)
-        try ledIdentifyCluster.addTo(clusterlist: ledClusterList,  role: .server)
-        try ledOnOffCluster.addTo(clusterlist: ledClusterList,  role: .server)
-        try ledLevelCluster.addTo(clusterlist: ledClusterList,  role: .server)
-        try ledColorControlCluster.addTo(clusterlist: ledClusterList,  role: .server)
-        try ledGroupsCluster.addTo(clusterlist: ledClusterList,  role: .server)
+        try ledBasicCluster.addTo(clusterlist:    ledClustersList,  role: .server)
+        try ledIdentifyCluster.addTo(clusterlist: ledClustersList,  role: .server)
+        try ledOnOffCluster.addTo(clusterlist:    ledClustersList,  role: .server)
+        try ledLevelCluster.addTo(clusterlist:    ledClustersList,  role: .server)
+        try ledColorControlCluster.addTo(clusterlist: ledClustersList,  role: .server)
+        try ledGroupsCluster.addTo(clusterlist:   ledClustersList,  role: .server)
     // )
     } catch {
         print ("Error: \(error.description)")
@@ -80,7 +89,7 @@ func esp_zb_task(_ param: UnsafeMutableRawPointer?) {
 
     esp_zb_ep_list_add_ep(
         endpointList, 
-        ledClusterList, 
+        ledClustersList, 
         ledStripEndPointConfig)
 
 

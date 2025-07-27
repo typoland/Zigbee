@@ -6,7 +6,9 @@ struct BasicCluster: Cluster {
     init(config: inout Config) {
         self.attributeList = esp_zb_basic_cluster_create(&config)
     }
-
+    static func makeCChar(_ string: String) -> [CChar] {
+        [CChar(string.count)] + string.utf8.map { CChar($0)}
+    }
     public enum Attribute: UInt16 {
         case zclVersion                  = 0x0000  // ZCL version attribute
         case applicationVersion          = 0x0001  // Application version attribute

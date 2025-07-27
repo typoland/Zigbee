@@ -18,9 +18,9 @@ extension Cluster {
     mutating func addTo(
         clusterlist: UnsafeMutablePointer<ClusterList>, 
         role: ZCLClusterRole) throws (ESPError) 
-        {
-            try runEsp { Self.addToClusterList( clusterlist, attributeList, role.rawValue)
-        }
+    {
+        try runEsp { Self.addToClusterList( clusterlist, attributeList, role.rawValue)}
+        print ("added to cluster list")
     }
 
     mutating func addAttribute<T>(
@@ -28,9 +28,10 @@ extension Cluster {
         _ value: UnsafeMutablePointer<T>) throws (ESPError)
         where Attribute: RawRepresentable,
         Attribute.RawValue == UInt16
-        {
-            try runEsp { Self.addAttribute (attributeList, attr.rawValue, value) }
-        }
+    {
+        try runEsp { Self.addAttribute (attributeList, attr.rawValue, value) }
+        print ("added attribute \(value.pointee)")
+    }
 } 
 
 
@@ -51,7 +52,7 @@ struct TestCluster: Cluster {
         self.attributeList = esp_zb_basic_cluster_create(&config)
     }
     enum Attribute {
-        
+
     }
 }
 

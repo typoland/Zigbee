@@ -33,14 +33,15 @@ struct ColorControlCluster: Cluster {
         case startUpColorTemperatureMireds     = 0x4010  // Startup color temp
     }
 }
+
 extension ColorControlCluster.Config: ClusterConfig  { 
     init(
-        currentX: UInt16,
-        currentY: UInt16,
-        colorMode: UInt8,
-        options: UInt8,
-        enhancedColorMode: UInt8,
-        colorCapabilities: [Self.ColorCapability]
+        currentX: UInt16 = Default.currentX,
+        currentY: UInt16 = Default.currentY,
+        colorMode: UInt8 = Default.colorMode,
+        options: UInt8 = Default.options,
+        enhancedColorMode: UInt8 = Default.enhancedColorMode,
+        colorCapabilities: [ColorCapability] = Default.colorCapabilities
     ) {
         self = .init(
             current_x: currentX,
@@ -48,7 +49,7 @@ extension ColorControlCluster.Config: ClusterConfig  {
             color_mode: colorMode,
             options: options,
             enhanced_color_mode: enhancedColorMode,
-            color_capabilities: 1<<3 //ZCLCluster.ColorControl.ColorCapability.value(colorCapabilities)
+            color_capabilities: 1<<3//ColorCapability.value(colorCapabilities)
         )
     }
     // MARK: - Attribute IDs
@@ -119,7 +120,7 @@ extension ColorControlCluster.Config: ClusterConfig  {
                 colorMode: Default.colorMode, 
                 options: Default.options, 
                 enhancedColorMode: Default.enhancedColorMode, 
-                colorCapabilities: [.xy]) 
+                colorCapabilities: Default.colorCapabilities) 
     
     enum Default {
         
@@ -140,7 +141,7 @@ extension ColorControlCluster.Config: ClusterConfig  {
     public static let colorLoopTime: UInt16                 = 0x0019
     public static let colorLoopStartEnhancedHue: UInt16     = 0x2300
     public static let colorLoopStoredEnhancedHue: UInt16    = 0x0000
-    public static let colorCapabilities: UInt16             = 0x0000
+    public static let colorCapabilities: [ColorCapability]    = [.xy]
     public static let colorTempPhysicalMinMireds: UInt16    = 0x0000
     public static let colorTempPhysicalMaxMireds: UInt16    = 0xFEFF
     }
