@@ -1,4 +1,4 @@
-struct ColorLedStip {
+struct ColorLedStripConfig {
     static var manufacturerName = [CChar(0x06)] + "Lampka".utf8.map{CChar($0)}
     static var modelIdentifier = [CChar(0x0F)] + "RGB Party Strip".utf8.map{CChar($0)}
 
@@ -13,7 +13,6 @@ struct ColorLedStip {
     }
 
     static var endpointId: UInt8 = 10
-    static var primaryChannelMask = ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK
 
     enum cluster {
         static var basic = BasicCluster.config

@@ -1,4 +1,4 @@
-struct TemperatureMeasurmentsCluster  {
+struct TemperatureMeasurmentsCluster   {
     public enum Attributes:UInt16 {
    
         case measuredValue     = 0x0000  // MeasuredValue

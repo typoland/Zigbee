@@ -72,9 +72,13 @@ struct BasicCluster {
 
 typealias BasicClusterConfig = esp_zb_basic_cluster_cfg_t
 extension BasicClusterConfig {
-    init(zclVersion: UInt8, powerSource: BasicCluster.PowerSource) {
+    init(
+        zclVersion: UInt8, 
+        powerSource: BasicCluster.PowerSource
+        ) {
         self = .init(
             zcl_version: zclVersion,
-            power_source: powerSource.rawValue)
+            power_source: powerSource.rawValue,
+            )
     }
 }

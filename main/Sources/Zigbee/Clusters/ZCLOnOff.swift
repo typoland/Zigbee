@@ -1,6 +1,6 @@
-struct OnOffCluster {
+struct OnOffCluster  {
 
-public enum ZCLOnOff {
+
     // MARK: - Attribute IDs
 
     enum Attributes:UInt16 {
@@ -24,7 +24,7 @@ public enum ZCLOnOff {
         case onWithTimedOff               = 0x42  // "On with timed off" command
     }
 }
-}
+
 
 extension OnOffCluster {
     static var config = Default.config

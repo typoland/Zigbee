@@ -38,6 +38,7 @@ class TemperatureSensorDriver {
         var handle = temperature_sensor_handle_t(bitPattern: 0)
         // tempSensorDriverSensorInit
         try runEsp { temperature_sensor_install(config,  &handle) }
+        
         guard let handle = handle
         else {throw .failure("no handle in \(#function)")}
         self.handle = handle

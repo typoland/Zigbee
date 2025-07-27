@@ -22,7 +22,7 @@ func defferedDriverInit()  throws (ESPError) {
         /* Update temperature sensor measured value */
         esp_zb_lock_acquire(portMAX_DELAY);
         esp_zb_zcl_set_attribute_val(
-            Thermometer.endpointId,
+            ThermometerConfig.endpointId,
             ZCLClusterID.temperatureMeasurement.rawValue, // ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT, 
             ZCLClusterRole.server.rawValue, // ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
             TemperatureMeasurmentsCluster.Attributes.measuredValue.rawValue, // ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, 

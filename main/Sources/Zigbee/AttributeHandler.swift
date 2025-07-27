@@ -21,7 +21,7 @@ func zb_attribute_handler(
         "\n✅➡️ Received message: endpoint:\(message.info.dst_endpoint), cluster:\(message.info.cluster), attribute:\(message.attribute.id), data size:\(message.attribute.data.size)"
     )
 
-    if message.info.dst_endpoint == ColorLedStip.endpointId {
+    if message.info.dst_endpoint == ColorLedStripConfig.endpointId {
         print("✅💡", terminator: "")
         switch message.info.cluster {
         case UInt16(ESP_ZB_ZCL_CLUSTER_ID_ON_OFF.rawValue):
@@ -47,7 +47,7 @@ func zb_attribute_handler(
             {
                 lightColorX = message.attribute.data.value.load(as: UInt16.self)
                 lightColorY = esp_zb_zcl_get_attribute(
-                    ColorLedStip.endpointId,
+                    ColorLedStripConfig.endpointId,
                     message.info.cluster,
                     UInt8(ESP_ZB_ZCL_CLUSTER_SERVER_ROLE.rawValue),
                     UInt16(ESP_ZB_ZCL_ATTR_COLOR_CONTROL_CURRENT_Y_ID.rawValue)
@@ -61,7 +61,7 @@ func zb_attribute_handler(
             {
                 lightColorY = message.attribute.data.value.load(as: UInt16.self)
                 lightColorX = esp_zb_zcl_get_attribute(
-                    ColorLedStip.endpointId,
+                    ColorLedStripConfig.endpointId,
                     message.info.cluster,
                     UInt8(ESP_ZB_ZCL_CLUSTER_SERVER_ROLE.rawValue),
                     UInt16(ESP_ZB_ZCL_ATTR_COLOR_CONTROL_CURRENT_X_ID.rawValue)

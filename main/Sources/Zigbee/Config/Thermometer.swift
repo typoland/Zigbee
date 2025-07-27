@@ -1,4 +1,5 @@
-struct Thermometer {
+
+struct ThermometerConfig {
     static var manufacturerName = [CChar(0x09)] + "Balangano".utf8.map{CChar($0)}
     static var modelIdentifier = [CChar(0x0C)] + "Play with me".utf8.map{CChar($0)}
 
@@ -13,7 +14,6 @@ struct Thermometer {
     }
 
     static var endpointId: UInt8 = 11
-    static var primaryChannelMask = ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK
 
     enum cluster {
         static var basic = BasicCluster.config
@@ -22,7 +22,7 @@ struct Thermometer {
     }
 
     static var clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? {
-        let clusterList = esp_zb_zcl_cluster_list_create()
+        let clusterList: UnsafeMutablePointer<esp_zb_cluster_list_t>? = esp_zb_zcl_cluster_list_create()
         
         let basicCluster = esp_zb_basic_cluster_create(&cluster.basic)
         let identifyCluster = esp_zb_identify_cluster_create(&cluster.identify)
@@ -75,7 +75,7 @@ struct Thermometer {
 
     static var reportingInfo = ReportingInfo (
             direction: .toClient, 
-            endpointID: Thermometer.endpointId, 
+            endpointID: Thermometer.Config.endpointId, 
             clusterID: .temperatureMeasurement, 
             clusterRole: .server, 
             attributesID: .measuredValue, 

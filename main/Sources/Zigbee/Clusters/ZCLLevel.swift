@@ -1,4 +1,4 @@
-struct LevelCluster  {
+struct LevelCluster {
     // MARK: - Attribute IDs
 
     enum Attributes:UInt16 {

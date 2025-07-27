@@ -20,7 +20,8 @@ enum Platform {
     
     static var maxChildren: UInt8 = 10
     static var installCodePolicy = false
-    
+    static var primaryChannelMask = ESP_ZB_TRANSCEIVER_ALL_CHANNELS_MASK
+
     static var networkConfiguration: esp_zb_cfg_t {
         return esp_zb_cfg_t(
             esp_zb_role: ESP_ZB_DEVICE_TYPE_ROUTER,

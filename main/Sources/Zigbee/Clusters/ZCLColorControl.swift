@@ -1,4 +1,4 @@
-struct ColorControlCluster { 
+struct ColorControlCluster  { 
     // MARK: - Attribute IDs
 
     enum Attribute : UInt16 {

@@ -1,4 +1,4 @@
-struct ScenesCluster  {
+struct ScenesCluster   {
     // MARK: - Attribute IDs
 
     enum Attributes :UInt8 {
